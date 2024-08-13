@@ -1,37 +1,36 @@
-import 'package:logger/logger.dart';
-
-import '../app/core/constants/app_values.dart';
+import 'package:flutter_template/config/env_values.dart';
+import 'package:flutter_template/config/environment.dart';
 
 class EnvConfig {
-  final String appName;
-  final String baseUrl;
-  final bool shouldCollectCrashLog;
+  final Environment _flavor;
+  final EnvValues _values;
 
-  late final Logger logger;
+  static late EnvConfig _instance;
+  static var _initialized = false;
 
-  EnvConfig({
-    required this.appName,
-    required this.baseUrl,
-    this.shouldCollectCrashLog = false,
-  }) {
-    logger = Logger(
-      printer: PrettyPrinter(
-          excludeBox: {
-            Level.verbose: true,
-            Level.info: true,
-          },
-          methodCount: AppValues.loggerMethodCount,
-          // number of method calls to be displayed
-          errorMethodCount: AppValues.loggerErrorMethodCount,
-          // number of method calls if stacktrace is provided
-          lineLength: AppValues.loggerLineLength,
-          // width of the output
-          colors: true,
-          // Colorful log messages
-          printEmojis: true,
-          // Print an emoji for each log message
-          printTime: false // Should each log print contain a timestamp
-          ),
-    );
+  factory EnvConfig.initialize({required String flavorString}) {
+    if (!_initialized) {
+      final flavor = Environment.fromString(flavor: flavorString);
+      final values = EnvValues.fromEnvironment();
+      _instance = EnvConfig._internal(flavor: flavor, values: values);
+      _initialized = true;
+    }
+    return _instance;
   }
+
+  EnvConfig._internal({
+    required Environment flavor,
+    required EnvValues values,
+  })  : _flavor = flavor,
+        _values = values;
+
+  static Environment get flavor => _instance._flavor;
+
+  static EnvValues get values => _instance._values;
+
+  static bool isPROD() => _instance._flavor == Environment.prod;
+
+  static bool isSTG() => _instance._flavor == Environment.stg;
+
+  static bool isDEV() => _instance._flavor == Environment.dev;
 }

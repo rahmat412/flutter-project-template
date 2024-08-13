@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 
+import '/app/core/helpers/log_helper.dart';
 import '/app/core/model/page_state.dart';
 import '/app/network/exceptions/api_exception.dart';
 import '/app/network/exceptions/app_exception.dart';
@@ -12,11 +12,8 @@ import '/app/network/exceptions/network_exception.dart';
 import '/app/network/exceptions/not_found_exception.dart';
 import '/app/network/exceptions/service_unavailable_exception.dart';
 import '/app/network/exceptions/unauthorize_exception.dart';
-import '../../../config/build_config.dart';
 
 abstract class BaseController extends GetxController {
-  final Logger logger = BuildConfig.instance.config.logger;
-
   AppLocalizations get appLocalization => AppLocalizations.of(Get.context!)!;
 
   final logoutController = false.obs;

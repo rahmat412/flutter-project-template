@@ -1,12 +1,21 @@
-import java.util.regex.Matcher
-import java.util.regex.Pattern
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
 
-def localProperties = loadPropertiesFile('local.properties')
-def keystoreProperties = loadPropertiesFile('key.properties')
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
 
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
@@ -19,48 +28,7 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-def loadPropertiesFile(String fileName) {
-    println(fileName)
-    def properties = new Properties()
-    def propertiesFile = rootProject.file(fileName)
-    if (propertiesFile.exists()) {
-        propertiesFile.withReader('UTF-8') { reader ->
-            properties.load(reader)
-        }
-    }
-    return properties
-}
-
-def getCurrentFlavor() {
-    Gradle gradle = getGradle()
-    String  tskReqStr = gradle.getStartParameter().getTaskRequests().toString()
-
-    Pattern pattern
-    println(tskReqStr)
-    if( tskReqStr.contains( "assemble" ) )
-        pattern = Pattern.compile("assemble(\\w+)(Release|Debug)")
-    else if( tskReqStr.contains("bundle") )
-        pattern = Pattern.compile("bundle(\\w+)(Release|Debug)")
-    else
-        pattern = Pattern.compile("generate(\\w+)(Release|Debug)")
-
-    Matcher matcher = pattern.matcher( tskReqStr )
-
-    if( matcher.find() )
-        return matcher.group(1).toLowerCase()
-    else
-    {
-        println "NO MATCH FOUND"
-        return ""
-    }
-}
-
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-
 android {
-
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -82,35 +50,42 @@ android {
     signingConfigs {
         release {
             keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['password']
+            keyPassword keystoreProperties['keyPassword']
             storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-            storePassword keystoreProperties['password']
+            storePassword keystoreProperties['storePassword']
         }
     }
 
     buildTypes {
+        debug {
+            minifyEnabled true
+            signingConfig signingConfigs.debug
+        }
         release {
+            minifyEnabled true
             signingConfig signingConfigs.release
         }
     }
 
-    flavorDimensions "default"
+    flavorDimensions "flavors"
+
     productFlavors {
         dev {
-            dimension "default"
+            dimension "flavors"
             applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+        }
+        stg {
+            dimension "flavors"
+            applicationIdSuffix ".stg"
+            versionNameSuffix "-stg"
         }
         prod {
-            dimension "default"
+            dimension "flavors"
         }
     }
 }
 
 flutter {
     source '../..'
-    target "lib/main_" + getCurrentFlavor() + ".dart"
-}
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

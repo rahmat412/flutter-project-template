@@ -14,7 +14,7 @@ class HomeView extends BaseView<HomeController> {
 
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
-    return const CustomAppBar(appBarTitleText: 'GetX Templates on GitHub');
+    return const CustomAppBar(appBarTitleText: 'Flutter Templates on GitHub');
   }
 
   @override
@@ -39,8 +39,7 @@ class HomeView extends BaseView<HomeController> {
 
               return ItemGithubProject(dataModel: model);
             },
-            separatorBuilder: (BuildContext context, int index) =>
-                const SizedBox(height: 8),
+            separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 8),
           ),
         ),
       ),

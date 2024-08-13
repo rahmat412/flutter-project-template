@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_template/app/core/constants/app_colors.dart';
 
 import '/app/core/utils/debouncer.dart';
 
@@ -28,12 +29,9 @@ class PagingView extends StatelessWidget {
     return NotificationListener(
       onNotification: (ScrollNotification scrollInfo) {
         if (scrollController != null) {
-          var triggerFetchMoreSize =
-              0.75 * scrollController!.position.maxScrollExtent;
+          var triggerFetchMoreSize = 0.75 * scrollController!.position.maxScrollExtent;
 
-          if (scrollController!.position.pixels >= triggerFetchMoreSize &&
-              (scrollController!.position.userScrollDirection ==
-                  ScrollDirection.reverse)) {
+          if (scrollController!.position.pixels >= triggerFetchMoreSize && (scrollController!.position.userScrollDirection == ScrollDirection.reverse)) {
             _debouncer.run(() {
               onLoadNextPage();
             });
@@ -45,6 +43,7 @@ class PagingView extends StatelessWidget {
       child: onRefresh == null
           ? _getScrollableView()
           : RefreshIndicator(
+              color: AppColors.primaryColor,
               child: _getScrollableView(),
               onRefresh: onRefresh!,
             ),

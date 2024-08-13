@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../../../core/helpers/log_helper.dart';
 import '/app/core/base/base_controller.dart';
 import '/app/core/base/paging_controller.dart';
 import '/app/core/model/github_search_query_param.dart';

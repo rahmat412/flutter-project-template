@@ -5,6 +5,30 @@ version: 0.0.1+1
 environment: 
   sdk: '>=3.1.0 <4.0.0'
 
+scripts:
+  build_runner: flutter pub run build_runner build --delete-conflicting-outputs
+  launch:
+    dev: flutter run --flavor dev --dart-define=flavor=dev
+    stg: flutter run --flavor stg --dart-define=flavor=stg
+    prod: flutter run --flavor prod --dart-define=flavor=prod
+  build:
+    apk:
+      dev: flutter build apk --flavor=dev --dart-define=flavor=dev --debug
+      stg: flutter build apk --flavor=stg --dart-define=flavor=stg --debug
+      prod: flutter build apk --flavor=prod --dart-define=flavor=prod --debug
+    release-apk:
+      dev: flutter build apk --flavor=dev --dart-define=flavor=dev --release --obfuscate --split-debug-info=debug-info
+      stg: flutter build apk --flavor=stg --dart-define=flavor=stg --release --obfuscate --split-debug-info=debug-info
+      prod: flutter build apk --flavor=prod --dart-define=flavor=prod --release --obfuscate --split-debug-info=debug-info
+    appbundle:
+      dev: flutter build appbundle --flavor=dev --dart-define=flavor=dev
+      stg: flutter build appbundle --flavor=stg --dart-define=flavor=stg
+      prod: flutter build appbundle --flavor=prod --dart-define=flavor=prod
+    ios:
+      dev: flutter build ios --flavor=dev --dart-define=flavor=dev --debug --no-codesign
+      stg: flutter build ios --flavor=stg --dart-define=flavor=stg --debug --no-codesign
+      prod: flutter build ios --flavor=prod --dart-define=flavor=prod --debug --no-codesign
+
 dependencies:
   flutter: 
     sdk: flutter
@@ -35,6 +59,9 @@ flutter:
   uses-material-design: true
   assets:
     - images/
+    - .env
+    - .env.dev
+    - .env.stg
   fonts:
     - family: Roboto
       fonts:

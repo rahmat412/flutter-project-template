@@ -1,3 +1,4 @@
+**/dgph
 *.mode1v3
 *.mode2v3
 *.moved-aside
@@ -10,6 +11,7 @@
 **/DerivedData/
 Icon?
 **/Pods/
+Podfile.lock
 **/.symlinks/
 profile
 xcuserdata

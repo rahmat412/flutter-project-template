@@ -3,15 +3,14 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
+import '../core/helpers/log_helper.dart';
 import '/app/network/exceptions/api_exception.dart';
 import '/app/network/exceptions/app_exception.dart';
 import '/app/network/exceptions/network_exception.dart';
 import '/app/network/exceptions/not_found_exception.dart';
 import '/app/network/exceptions/service_unavailable_exception.dart';
-import '../../config/build_config.dart';
 
 Exception handleError(String error) {
-  final logger = BuildConfig.instance.config.logger;
   logger.e("Generic exception: $error");
 
   return AppException(message: error);
@@ -39,8 +38,6 @@ Exception handleDioError(DioException dioError) {
 }
 
 Exception _parseDioErrorResponse(DioException dioError) {
-  final logger = BuildConfig.instance.config.logger;
-
   int statusCode = dioError.response?.statusCode ?? -1;
   String? status;
   String? serverMessage;
@@ -64,9 +61,6 @@ Exception _parseDioErrorResponse(DioException dioError) {
     case HttpStatus.notFound:
       return NotFoundException(serverMessage ?? "", status ?? "");
     default:
-      return ApiException(
-          httpCode: statusCode,
-          status: status ?? "",
-          message: serverMessage ?? "");
+      return ApiException(httpCode: statusCode, status: status ?? "", message: serverMessage ?? "");
   }
 }

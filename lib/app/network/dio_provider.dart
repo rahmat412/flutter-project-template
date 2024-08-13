@@ -1,12 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_template/config/environment.dart';
 
 import '/app/network/pretty_dio_logger.dart';
 import '/app/network/request_headers.dart';
-import '../../config/build_config.dart';
+import '../../config/env_config.dart';
 
 class DioProvider {
-  static final String baseUrl = BuildConfig.instance.config.baseUrl;
+  static final String baseUrl = EnvConfig.values.apiBaseUrl;
 
   static Dio? _instance;
 
@@ -15,7 +14,7 @@ class DioProvider {
   static final _prettyDioLogger = PrettyDioLogger(
     requestHeader: true,
     requestBody: true,
-    responseBody: BuildConfig.instance.environment == Environment.DEVELOPMENT,
+    responseBody: EnvConfig.isDEV(),
     responseHeader: false,
     error: true,
     compact: true,
