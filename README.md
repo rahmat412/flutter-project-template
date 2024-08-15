@@ -46,7 +46,7 @@ Using [derry](https://pub.dev/packages/rps) or [rps](https://pub.dev/packages/rp
 `flutter pub run change_app_package_name:main your_package_name`
 
 # How was this project developed?
-- First, install get_cli in global package using: `flutter pub global activate --source=git "https://github.com/rahmat412/get_cli.git"`
+- First, install [get_cli](https://pub.dev/packages/get_cli), but currently [get_cli](https://pub.dev/packages/get_cli) is depricated. For a while will using git-source to install by run: `flutter pub global activate --source=git "https://github.com/rahmat412/get_cli.git"`
 - Run [get_cli](https://pub.dev/packages/get_cli) command to create project in the required directory: `get create project`
 - Create `main_view` by running this command: `get create page:main`, it will add new modules named `main`
 - Using `get create controller:main_temp on main` to add new controller in `main` module
