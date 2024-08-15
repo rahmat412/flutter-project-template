@@ -4,9 +4,7 @@ This Flutter Template using [GetX](https://pub.dev/packages/get) package for Sta
 
 # Architecture of this project: MVVM
 
-MVVM (Model View ViewModel) is one of the most popular architectural pattern for Android App development. Basically
-this pattern separates User interface from business-logic and data-logic. So that it's divided into three layers: Model layer, 
-View layer and View model layer. Let's explore it more deeply.
+MVVM (Model View ViewModel) is one of the most popular architectural pattern for Android App development. Basically this pattern separates User interface from business-logic and data-logic. So that it's divided into three layers: Model layer,  View layer and View model layer. Let's explore it more deeply.
 
 ![mvvm](https://user-images.githubusercontent.com/3769029/137336079-1f3384d0-b9d6-4462-a2c4-4a3d2cc77e8a.png)
 
@@ -20,13 +18,23 @@ for data and observe the response. Till then it may display a loader to the user
 
 <b>Model:</b> Model is basically backend logic. It controls the data source.
 
-# To configure and run this project [check here](readme_configuration_guideline.md) 
-You will find at above link step by step instructions with screenshots.
+# Run this project by scripts
 
-# run this project by command line
-Dev: `flutter run --flavor dev lib/main_dev.dart`
+This project template is using scripts to run some flutter commands. So here is the example setup for the scripts in [pubspec.yaml](https://github.com/rahmat412/flutter-project-template/blob/main/pubspec.yaml) file:
 
-Prod: `flutter run --flavor prod lib/main_prod.dart`
+```
+scripts:
+  build_runner: flutter pub run build_runner build --delete-conflicting-outputs
+  launch:
+    dev: flutter run --flavor dev --dart-define=flavor=dev
+    stg: flutter run --flavor stg --dart-define=flavor=stg
+    prod: flutter run --flavor prod --dart-define=flavor=prod
+```
+
+Using [derry](https://pub.dev/packages/rps) or [rps](https://pub.dev/packages/rps) to run the script. You have to install the package first then you can using the scripts. Here is the example commands:
+1. Generate build_runner: `derry build_runner` or `rps build_runner`
+2. Run flutter in your machine: `derry launch dev/stg/prod` or `rps launch dev/stg/prod`
+
 
 # How to update app information and continue development for your own project?
 
@@ -40,4 +48,6 @@ Prod: `flutter run --flavor prod lib/main_prod.dart`
 # How was this project developed?
 - First, install get_cli in global package using: `flutter pub global activate --source=git "https://github.com/rahmat412/get_cli.git"`
 - Run [get_cli](https://pub.dev/packages/get_cli) command to create project in the required directory: `get create project`
-- Create `main_view` by running this command: `get create page:main` and so on...
+- Create `main_view` by running this command: `get create page:main`, it will add new modules named `main`
+- Using `get create controller:main_temp on main` to add new controller in `main` module
+- Using `get create view:main_temp on main` to add new view/page in `main` module
