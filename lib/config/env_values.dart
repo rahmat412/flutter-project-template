@@ -5,7 +5,7 @@ class EnvValues {
   final String apiBaseUrl;
   final bool showLogs;
 
-  const EnvValues({
+  EnvValues({
     required this.apiBaseUrl,
     this.showLogs = false,
   });
